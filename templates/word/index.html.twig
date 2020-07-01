@@ -1,44 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello WordController!{% endblock %}
+{% block title %}La bonne impression{% endblock %}
 
 {% block body %}
-    <form action="{{ path('word_check') }}">
-        <button>Check</button>
-    </form>
-    <form action="{{ path('word_replay') }}">
-        <button>Replay</button>
-    </form>
-    {% if game.step == 1 %}
-        <img id="stick1" src="https://i.imgur.com/ZUh0WSK.png">
-    {% endif %}
-    {% if game.step == 2 %}
-        <img id="stick2" src="https://i.imgur.com/zn1TZsc.png">
-    {% endif %}
-    {% if game.step == 3 %}
-    <img id="stick3" src="https://i.imgur.com/AxWUw4H.png">
-    {% endif %}
-    {% if game.step == 4 %}
-    <img id="stick4" src="https://i.imgur.com/2q4UAXI.png">
-    {% endif %}
-    {% if game.step == 5 %}
-    <img id="stick5" src="https://i.imgur.com/cCTeHJJ.png">
-    {% endif %}
-    {% if game.step == 6 %}
-    <img id="stick6" src="https://i.imgur.com/Pg92iNM.png">
-    {% endif %}
-    {% if game.step == 7 %}
-    <img id="stick7" src="https://i.imgur.com/U94sZ9m.png">
-    {% endif %}
-    {% if game.step == 8 %}
-    <img id="stick8" src="https://i.imgur.com/GFPA30S.png">
-    {% endif %}
-    {% if game.step == 9 %}
-    <img id="stick9" src="https://i.imgur.com/8Ol4GWF.png">
-    {% endif %}
-    {% if game.step == 10 %}
-    <img id="stick10" src="https://i.imgur.com/Icr7LoK.png">
-    {% endif %}
+    <h1 class="mt-5 text-center">LA BONNE IMPRESSION</h1>
+    <h2 class="mt-3 text-center"><a href="{{ path('word_replay') }}"><i class="fa fa-random"></i></a></h2>
+    <div class="container d-flex justify-content-center">
+
+        <div class="col-5 offset-1">
+            <form action="{{ path('word_check') }}" class="mb-2">
+                <input type="text" name="letter" class="ml-5">
+                <button class="ml-1">Tester</button>
+            </form>
+            {% for type, flash in app.flashes %}
+                {%  for message in flash %}
+                    <span class="{{ type }} ml-5 mt-2">{{ message }}</span>
+                {% endfor %}
+            {% endfor %}
+            <div class="mt-5 w-100">
+                {% if letters %}
+                    <p class="ml-5">Ces lettres ne sont pas dans le mot :</p>
+                    <ul class="pl-0 ml-5">
+                        {% for letter in letters %}
+                            <li class="rounded">
+                                <div class="letter-checked d-flex justify-content-center align-items-center">
+                                    {{ letter.letter|upper }}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-5 d-flex justify-content-center">
+        {% include 'word/_hangman.html.twig' %}
+        </div>
+
+    </div>
 
 {% endblock %}
 

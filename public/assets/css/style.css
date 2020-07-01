@@ -1,3 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Concert+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Finger+Paint&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&display=swap');
+
+body {
+    background-color: #000000;
+    font-family: 'Concert One', cursive;
+    color: #eeba30;
+}
+
+button {
+    background-color: #eeba30;
+}
+
 img {
-    position: absolute;
+    width: 70%;
+    padding: 5px;
+}
+
+h1 {
+    color: #eeba30;
+    font-family: 'Special Elite', cursive;
+}
+
+a {
+    color: #ae0001;
+}
+
+a:hover {
+    color: #740001;
+}
+
+ul {
+    list-style-type:none;
+}
+
+li {
+    display: inline-block;
+    background-color: #eeba30;
+    color: black;
+}
+
+.letter-checked {
+    height: 25px;
+    width: 25px;
 }
