@@ -26,4 +26,16 @@ class LetterManager
 
         return $result;
     }
+
+    public function checkWin ($word, $responses)
+    {
+        $wordInArray = str_split($word);
+        $result = false;
+
+        if ($wordInArray === $responses) {
+            $result = true;
+        }
+
+        return $result;
+    }
 }

@@ -3,6 +3,9 @@
 {% block title %}La bonne impression{% endblock %}
 
 {% block body %}
+    {% if checkWin %}
+        {% include '/word/_fireworks.html.twig' %}
+    {% endif %}
     <h1 class="mt-5 text-center">LA BONNE IMPRESSION</h1>
     <h2 class="mt-3 text-center"><a href="{{ path('word_replay') }}"><i class="fa fa-random"></i></a></h2>
     <div class="container d-flex justify-content-center">
@@ -10,7 +13,7 @@
         <div class="col-5 offset-1">
             <form action="{{ path('word_check') }}" class="mb-2">
                 <input type="text" name="letter" class="ml-5">
-                <button class="ml-1">Tester</button>
+                <button class="ml-1" {{ checkWin ? 'disabled' : '' }}>Tester</button>
             </form>
             {% for type, flash in app.flashes %}
                 {%  for message in flash %}
@@ -28,23 +31,32 @@
                         </li>
                     {% endfor %}
                 </ul>
-                {% if wrongLetters %}
-                    <p class="ml-5">Ces lettres ne sont pas dans le mot :</p>
-                    <ul class="pl-0 ml-5">
-                        {% for letter in wrongLetters %}
-                            <li class="rounded">
-                                <div class="letter-checked d-flex justify-content-center align-items-center">
-                                    {{ letter.letter|upper }}
-                                </div>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                {% if checkWin %}
+                    <p class="ml-5">Bravo, tu as trouvé la solution !</p>
+                    {% include '/word/_fireworks.html.twig' %}
+                {% else %}
+                    {% if wrongLetters %}
+                        <p class="ml-5">Ces lettres ne sont pas dans le mot :</p>
+                        <ul class="pl-0 ml-5">
+                            {% for letter in wrongLetters %}
+                                <li class="rounded">
+                                    <div class="letter-checked d-flex justify-content-center align-items-center">
+                                        {{ letter.letter|upper }}
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>
 
         <div class="col-5 d-flex justify-content-center">
-        {% include 'word/_hangman.html.twig' %}
+            {% if checkWin %}
+                <img src="{{ asset('img/bravo.png') }}">
+            {% else %}
+                {% include 'word/_printer.html.twig' %}
+            {% endif %}
         </div>
 
     </div>

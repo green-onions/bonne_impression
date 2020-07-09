@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Letter;
 use App\Repository\GameRepository;
 use App\Repository\LetterRepository;
+use App\Repository\WordRepository;
 use App\Service\LetterManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,14 +53,16 @@ class WordController extends AbstractController
     /**
      * @Route("/replay", name="replay")
      * @param GameRepository $gameRepository
+     * @param WordRepository $wordRepository
      * @param LetterRepository $letterRepository
      * @param EntityManagerInterface $entityManager
      * @return RedirectResponse
      */
-    public function replay(GameRepository $gameRepository, LetterRepository $letterRepository, EntityManagerInterface $entityManager)
+    public function replay(GameRepository $gameRepository, WordRepository $wordRepository, LetterRepository $letterRepository, EntityManagerInterface $entityManager)
     {
         $game = $gameRepository->findOneBy([]);
         $game->setStep(0);
+        $game->setWord($wordRepository->findOneById(rand(1,5)));
         $letterRepository->createQueryBuilder('l')->where('l.id >= 1')->delete()->getQuery()->execute();
         $entityManager->persist($game);
         $entityManager->flush();
@@ -82,10 +85,13 @@ class WordController extends AbstractController
 
         $responses = $letterManager->getLetters($word, $rightLetters);
 
+        $checkWin = $letterManager->checkWin($word, $responses);
+
         return $this->render('word/index.html.twig', [
-            'game'             => $game,
-            'wrongLetters'     => $wrongLetters,
-            'responses'      => $responses
+            'game'         => $game,
+            'wrongLetters' => $wrongLetters,
+            'responses'    => $responses,
+            'checkWin'     => $checkWin
         ]);
     }
 }
