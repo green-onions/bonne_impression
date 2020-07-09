@@ -18,10 +18,20 @@
                 {% endfor %}
             {% endfor %}
             <div class="mt-5 w-100">
-                {% if letters %}
+                <p class="ml-5">Le mot à trouver :</p>
+                <ul class="pl-0 ml-5">
+                    {% for response in responses %}
+                        <li class="rounded">
+                            <div class="letter-checked d-flex justify-content-center align-items-center">
+                                {{ response|upper }}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+                {% if wrongLetters %}
                     <p class="ml-5">Ces lettres ne sont pas dans le mot :</p>
                     <ul class="pl-0 ml-5">
-                        {% for letter in letters %}
+                        {% for letter in wrongLetters %}
                             <li class="rounded">
                                 <div class="letter-checked d-flex justify-content-center align-items-center">
                                     {{ letter.letter|upper }}

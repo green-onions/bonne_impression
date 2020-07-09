@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Letter;
 use App\Repository\GameRepository;
 use App\Repository\LetterRepository;
+use App\Service\LetterManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -69,16 +70,22 @@ class WordController extends AbstractController
      * @Route("/word", name="word")
      * @param GameRepository $gameRepository
      * @param LetterRepository $letterRepository
+     * @param LetterManager $letterManager
      * @return Response
      */
-    public function index(GameRepository $gameRepository, LetterRepository $letterRepository)
+    public function index(GameRepository $gameRepository, LetterRepository $letterRepository, LetterManager $letterManager)
     {
-        $letters = $letterRepository->findBy(['isInTheWord' => false]);
+        $wrongLetters = $letterRepository->findBy(['isInTheWord' => false]);
+        $rightLetters = $letterRepository->findBy(['isInTheWord' => true]);
         $game = $gameRepository->findOneBy([]);
+        $word = $game->getWord()->getWord();
+
+        $responses = $letterManager->getLetters($word, $rightLetters);
 
         return $this->render('word/index.html.twig', [
-            'game'    => $game,
-            'letters' => $letters
+            'game'             => $game,
+            'wrongLetters'     => $wrongLetters,
+            'responses'      => $responses
         ]);
     }
 }
